@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`py-20 font-sans ${GeistSans.variable} ${GeistMono.variable}`}
       >
         <div
