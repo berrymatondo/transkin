@@ -81,7 +81,7 @@ export default function SignupForm() {
       },
       {
         onSuccess: () => {
-          router.push("/auth");
+          router.push("/auth/signin");
           router.refresh();
         },
         onError: (error) => {

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   Menu,
   Bell,
@@ -17,7 +17,9 @@ import {
   BarChart3,
   Home,
   X,
+  LogOut,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -25,7 +27,7 @@ const Header = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false); // Added state for notification visibility
   const router = useRouter();
 
-    const menuItems = [
+  const menuItems = [
     { label: "Accueil", icon: Home, route: "/" },
     { label: "Accueil", icon: LayoutDashboard, route: "/dashboard" },
     { label: "Véhicules", icon: Car, route: "/vehicules" },
@@ -33,7 +35,7 @@ const Header = () => {
     { label: "Contrats", icon: ClipboardList, route: "/contrats" },
     { label: "Rapports", icon: BarChart3, route: "/rapports" },
   ];
-  
+
   const [selectedCompany] = useState({
     id: 1,
     denomination: "TransKin SARL",
@@ -83,6 +85,12 @@ const Header = () => {
 
   const handleCompanyClick = () => {
     router.push("/entreprises");
+  };
+
+  const handleLogout = async () => {
+    await authClient.signOut(); // logout côté client
+    setIsMenuOpen(false);
+    router.push("/auth/signin"); // redirige l'utilisateur
   };
 
   return (
@@ -233,7 +241,6 @@ const Header = () => {
                   <X className="h-6 w-6" />
                 </Button>
               </div>
-
               <div className="space-y-2">
                 {menuItems.map((item, index) => (
                   <button
@@ -247,6 +254,21 @@ const Header = () => {
                   </button>
                 ))}
               </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+              >
+                <Button
+                  className="mt-4 text-red-400 flex items-center gap-2 w-full"
+                  type="submit"
+                  variant="ghost"
+                >
+                  <LogOut className="size-6 mr-2" />
+                  {"Se déconnecter"}
+                </Button>
+              </form>
             </div>
           </div>
         </>
