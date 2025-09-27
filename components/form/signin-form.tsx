@@ -49,7 +49,7 @@ export default function SigninForm() {
       },
       {
         onSuccess: () => {
-          router.push("/auth");
+          router.push("/dashboard");
           router.refresh();
         },
         onError: (error) => {

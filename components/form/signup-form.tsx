@@ -19,13 +19,39 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Lock, Mail, Phone, User } from "lucide-react";
 
-const signupFormSchema = z.object({
-  name: z.string().nonempty("Ce champ est obligatoire"),
-  email: z.string().email(),
-  phone: z.string(),
-  password: z.string(),
-  confirmPassword: z.string(),
-});
+const signupFormSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, "Le nom doit contenir au moins 2 caractères")
+      .max(50, "Le nom ne peut pas dépasser 50 caractères")
+      .trim(),
+
+    email: z.string().email("Adresse email invalide").toLowerCase().trim(),
+
+    phone: z
+      .string()
+      .regex(/^(\+?\d{1,3})?[ .-]?\d{6,14}$/, "Numéro de téléphone invalide")
+      .optional()
+      .or(z.literal("")), // permet de laisser vide si facultatif
+
+    password: z
+      .string()
+      .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+      .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
+      .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
+      .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre")
+      .regex(
+        /[@$!%*?&]/,
+        "Le mot de passe doit contenir au moins un caractère spécial (@$!%*?&)"
+      ),
+
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
+  });
 
 export default function SignupForm() {
   // 1. Define your form.
@@ -36,6 +62,7 @@ export default function SignupForm() {
       email: "",
       phone: "",
       password: "",
+      confirmPassword: "",
     },
   });
 

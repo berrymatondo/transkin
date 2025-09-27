@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { TranskinLogo } from "@/components/transkin-logo"
-import { useEffect, useState } from "react"
-import { Truck } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button";
+import { TranskinLogo } from "@/components/transkin-logo";
+import { useEffect, useState } from "react";
+import { Truck } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const router = useRouter()
+  const [isLoaded, setIsLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
+    setIsLoaded(true);
+  }, []);
 
   const handleStartClick = () => {
-    router.push("/login")
-  }
+    router.push("/auth/signin");
+  };
 
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center max-md:justify-between px-6 py-4: md:py-8 overflow-hidden">
@@ -36,7 +36,9 @@ export default function HomePage() {
         {/* Logo */}
         <div
           className={`w-full mb-4 transition-all duration-1000 ease-out ${
-            isLoaded ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 space-y-8 scale-95"
+            isLoaded
+              ? "opacity-100 translate-y-0 scale-100"
+              : "opacity-0 -translate-y-8 space-y-8 scale-95"
           }`}
           style={{ transitionDelay: "200ms" }}
         >
@@ -63,8 +65,9 @@ export default function HomePage() {
           style={{ transitionDelay: "600ms" }}
         >
           <p className="text-base text-gray-200 leading-relaxed">
-            Simplifiez toute votre activité de transport. Gérez vos véhicules, vos chauffeurs, vos contrats et vos
-            finances en toute simplicité… grâce à une seule application puissante.
+            Simplifiez toute votre activité de transport. Gérez vos véhicules,
+            vos chauffeurs, vos contrats et vos finances en toute simplicité…
+            grâce à une seule application puissante.
           </p>
         </div>
 
@@ -93,5 +96,5 @@ export default function HomePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
